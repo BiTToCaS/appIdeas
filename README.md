@@ -1,2 +1,2 @@
 # appIdeas
-Small ideas I have
+Small programs to spend time
