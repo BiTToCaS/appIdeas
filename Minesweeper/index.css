@@ -1,0 +1,117 @@
+body{
+    background-color: aquamarine;
+}
+
+.title{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+h1.ttl{
+    font-size: 100px;
+    height: 200px;
+    margin-top: 10%;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.buttons_box{
+    text-align: center;
+}
+
+.btn_easy{
+    border: none;
+    color :white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 30px 70px;
+    background-color: #1cc521;
+    display: inline-block;
+    box-shadow: 0 8px 16px 0 rgba(7, 190, 236, 0.719), 0 -6px 20px 0  rgba(7, 190, 236, 0.719);
+
+}
+
+.btn_medium{
+    border: none;
+    color :white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 30px 60px;
+    background-color: blue;
+    display: inline-block;
+    box-shadow: 0 8px 16px 0 rgba(217, 7, 236, 0.719), 0 -6px 20px 0 rgba(217, 7, 236, 0.719);
+    margin-left: 20px;
+}
+
+.btn_hard{
+    border: none;
+    color :white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 30px 70px;
+    background-color: red;
+    display: inline-block;
+    box-shadow: 0 8px 16px 0 rgba(0, 253, 21, 0.719), 0 -6px 20px 0 rgba(0, 253, 21, 0.719);
+    margin-left: 20px;
+
+}
+
+.grid-container-easy{
+
+    display: inline-grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    background-color: rgb(44, 41, 41);
+    margin-left: 45%;
+    border: solid;
+}
+
+.grid-container-med{
+
+    display: inline-grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    background-color: rgb(44, 41, 41);
+    margin-left: 45%;
+    border: solid;
+
+}
+
+.grid-container-hard{
+
+    display: inline-grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    background-color: rgb(44, 41, 41);
+    margin-top: 7%;
+    margin-left: 28%;
+    border: solid;
+}
+
+.grid-item{
+    background-color: rgb(148, 145, 145);
+    border: solid ;
+    border-width: 2px;
+    border-color: rgb(202, 191, 191);
+    border-bottom-color: rgb(65, 65, 65);
+    border-right-color: rgb(65, 65, 65);
+    padding: 10px 10px;
+}
+
+.back{
+    display: none;
+    margin-left: 5%;
+    margin-top: 5%;
+    color: rgb(8, 121, 173);
+    font-size: 400%;
+    background-color: #52c42fc7;
+    width: 90px;
+    border: 0px;
+    border-radius: 20%;
+}
