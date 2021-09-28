@@ -1,35 +1,17 @@
 gamemode = -1;
 cell_counter = -1;
 
-function create_ez() {
+function create_game(value) {
     document.getElementById("title").style.display = 'none';
     document.getElementById("btn_box").style.display= 'none';
     document.getElementById("back").style.display= 'block';
-    gamemode = 0;
-    create_grid(gamemode);
-}
-
-function create_med() {
-    document.getElementById("title").style.display = 'none';
-    document.getElementById("btn_box").style.display= 'none';
-    document.getElementById("back").style.display= 'block';
-    gamemode = 1;
-    create_grid(gamemode);
-}
-
-function create_hard() {
-    document.getElementById("title").style.display = 'none';
-    document.getElementById("btn_box").style.display= 'none';
-    document.getElementById("back").style.display= 'block';
-    gamemode = 2;
-    create_grid(gamemode);
+    create_grid(parseInt(value));
 }
 
 function create_grid(gamemode){
     dimension = 0;
     grid = document.getElementById("grid");
-    checkClassList(grid);
-    console.log(gamemode);
+    checkClassList(grid.classList);
     switch(gamemode){
         case 0:
             dimension = 8;
@@ -53,8 +35,9 @@ function create_grid(gamemode){
             var cell = document.createElement('div');
             cell.id = ++cell_counter;
             cell.className = 'grid-item';
-            //cell.innerHTML = cell_counter;
-            //cell.innerHTML = "1";
+            cell.onmouseup = function (){
+                check_cell();
+            }
             document.getElementById('grid').appendChild(cell);
         }
     }
@@ -89,4 +72,8 @@ function checkClassList(cl){
     else if(cl.contains('grid-container-easy')){
         cl.remove('grid-container-easy');
     }
+}
+
+function check_cell(){
+    console.log("verga");
 }

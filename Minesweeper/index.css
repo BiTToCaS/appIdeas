@@ -115,3 +115,8 @@ h1.ttl{
     border: 0px;
     border-radius: 20%;
 }
+
+.grid-header{
+    text-align: center;
+
+}
