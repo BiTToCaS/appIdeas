@@ -2,6 +2,11 @@ body{
     background-color: aquamarine;
 }
 
+.container{
+    margin: auto;
+    display: none;
+}
+
 .title{
     margin-left: auto;
     margin-right: auto;
@@ -60,37 +65,32 @@ h1.ttl{
 }
 
 .grid-container-easy{
-
+    margin-top:-9px;
     display: inline-grid;
     grid-template-columns: auto auto auto auto auto auto auto auto;
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     background-color: rgb(44, 41, 41);
-    margin-left: 45%;
     border: solid;
 }
 
 .grid-container-med{
-
+    margin-top:-9px;
     display: inline-grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     background-color: rgb(44, 41, 41);
-    margin-left: 45%;
     border: solid;
-
 }
 
 .grid-container-hard{
-
+    margin-top:-9px;
     display: inline-grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     background-color: rgb(44, 41, 41);
-    margin-top: 7%;
-    margin-left: 28%;
     border: solid;
 }
 
@@ -101,13 +101,17 @@ h1.ttl{
     border-color: rgb(202, 191, 191);
     border-bottom-color: rgb(65, 65, 65);
     border-right-color: rgb(65, 65, 65);
-    padding: 10px 10px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 18px;
 }
 
 .back{
     display: none;
     margin-left: 5%;
-    margin-top: 5%;
+    margin-top: 2%;
     color: rgb(8, 121, 173);
     font-size: 400%;
     background-color: #52c42fc7;
@@ -118,5 +122,43 @@ h1.ttl{
 
 .grid-header{
     text-align: center;
+    border:solid;
+    height: 40px;
+    background-color: rgb(148, 145, 145);
+}
 
+.mines_left{
+    border: solid rgb(58, 57, 57);
+    background-color: rgb(32, 32, 32);
+    color: red;
+    margin-left: 3%;
+    margin-top: 5px;
+    width: 30px;
+    height: 25px;
+    font-size: 16px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;
+    float:left;
+}
+
+.restart{
+    margin-top: 2px;
+    padding:7px;
+    text-align: center;
+    margin-left: 45px;
+    float:left;
+    border-width: 2px;
+    border-color: rgb(58, 57, 57);
+}
+
+.timer{
+    border: solid rgb(58, 57, 57);
+    background-color: rgb(32, 32, 32);
+    color: red;
+    margin-right: 2%;
+    margin-top: 5px;
+    width: 50px;
+    height: 25px;
+    font-size: 16px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;
+    float:right;
 }

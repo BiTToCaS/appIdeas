@@ -3,6 +3,7 @@
     <meta charset="utf-8" />
     <title>Minesweeper</title>
     <link rel="stylesheet" href="index.css" />
+    
 </head>
 <body>
     <div class="title" id="title">
@@ -14,10 +15,14 @@
         <button type="button" class="btn_hard" id="btn_hard" value="2" onclick="create_game(this.value)">Hard</button>
     </div>
     <button class="back" id="back" onclick="back()">&#8592;</button>
-    <div class="grid-header" id="grid-header">
-        <h1>ausdhasuihd</h1>
-    </div>
-    <div id="grid">
+    <div class="container" id="container">
+        <div class="grid-header" id="grid-header">
+            <p class="mines_left" id="mines_left">0 0</p>
+            <button class="restart" id="restart_btn" onmousedown="restart_down()" onmouseup="restart_up()">🗻</button>
+            <p class="timer" id="timer">0 0 0</p>
+        </div>
+        <div id="grid">
+        </div>
     </div>
 
     <script src="index.js"></script>
