@@ -5,6 +5,8 @@ var first_cell = false;
 document.getElementById("timer").value = 0;
 var timer_counters = 0;
 
+
+
 //////////////////////////////////////////////////////////////////// 
 //
 //GAME CREATION
@@ -16,6 +18,7 @@ function create_game(value) {
     document.getElementById("btn_box").style.display= 'none';
     document.getElementById("back").style.display= 'block';
     document.getElementById("container").style.display= 'block';
+    document.getElementById("restart_btn").innerHTML = "🗻";
     var minesPositions = generateMinesPositions(parseInt(value));
     create_grid(parseInt(value), minesPositions);
 }
@@ -39,8 +42,8 @@ function generateMinesPositions(gamemode){
             break;
     }
 
-    while( minesPositions.length < dimensions){
-        pos = { "x":parseInt(Math.random()*(dimensions - 1)) , "y":parseInt(Math.random()*(dimensions - 1)) };
+    while( minesPositions.length < noMines){
+        pos = { "x":parseInt(Math.random()*dimensions) , "y":parseInt(Math.random()*dimensions) };
         if(!listContains(minesPositions,pos))
             minesPositions.push(pos);
     }
@@ -97,29 +100,28 @@ function create_grid(gamemode, minesPos){
         default: 
             break;
     }
-    
+
     for( i = 0; i < dimension; i++){
         for ( j = 0; j< dimension; j++){
             var cell = document.createElement('div');
-            console.log(minesPos);
-            console.log( {x: i, y: j});
-            console.log(listContains(minesPos, {x: i, y: j}));
-            if(listContains(minesPos, {x: i, y: j})){
-                console.log("control");
-                cell.value = 0;}
-            else
-                cell.value = 1;
-            cell.id = ++cell_counter;
+            cell.id = "c" + ++cell_counter;
             cell.className = 'grid-item';
-            //cell.value = false;
-            
+            cell.value = 0;
             cell.onmouseup = function (){
-                check_cell();
+                check_cell(dimension);
             }
 
             cell.addEventListener("contextmenu", e => e.preventDefault());  //Disable right click menu
 
             document.getElementById('grid').appendChild(cell);
+        }
+    }
+
+    for(i = 0; i < dimension*dimension; i++){
+        var cell = document.getElementById("c" + i);
+        if(listContains(minesPos, {x: Math.floor(i/dimension) , y: i%dimension})){
+            cell.value = "m";
+            addCounterToAdjacent(dimension, cell.id);
         }
     }
 
@@ -145,13 +147,32 @@ function checkClassList(cl){
     }
 }
 
+function addCounterToAdjacent(dimension, id){
+    id = parseInt(id.substr(1,id.length - 1));
+    calc = [- dimension - 1, - dimension, - dimension + 1, - 1 , 1, dimension - 1, dimension , dimension + 1];
+    calc.forEach(cont => {
+        adj = document.getElementById("c" + (id + cont));
+        if( adj != null && adj.value != "m"){
+            if( !(id%dimension == 0 && (cont == - dimension - 1 || cont == - 1 || cont == dimension - 1))
+                        && !(id%dimension == dimension - 1 && (cont == - dimension + 1 || cont == 1 || cont == dimension + 1))){
+                if(adj.value >= 1){
+                    adj.value = adj.value + 1; 
+                }
+                else{
+                    adj.value = 1;
+                }               
+            }
+        }
+    });
+}
+ 
 ////////////////////////////////// 
 //
 //Cell Events
 //
 //////////////////////////////////
 
-function check_cell(){
+function check_cell(dimension){
 
     if (first_cell == false){
         document.getElementById("timer").value = 0;
@@ -161,15 +182,13 @@ function check_cell(){
             if(first_cell == false || timer_counters > 1){
                 timer_counters--;
                 clearInterval(time);
-                document.getElementById("timer").innerHTML = "0 0 0";
-                document.getElementById("timer").value = 0;
             }    
         }, 1000);
         first_cell = true;
     }
 
     //Check wich mouse key was used
-    isRight = -1;
+    var isRight = -1;
     if ("which" in window.event)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
         isRight = window.event.which == 3; 
     else if ("button" in window.event)  // IE, Opera 
@@ -178,10 +197,10 @@ function check_cell(){
     if (isRight)
         right_click(event.target);
     else
-        left_click(event.target);
+        left_click(event.target, dimension);
 }
 
-function left_click(cell){
+function left_click(cell, dimension){
     cell.style.borderColor = "rgb(190, 187, 187)";
     cell.style.backgroundColor = "rgb(190, 187, 187)";
 
@@ -189,11 +208,16 @@ function left_click(cell){
 
     cell.onmouseup = function (){ }
     
-    number = cell.value;
-    console.log(cell.value);
+    var number = cell.value;
     cell.innerHTML = number;
 
     switch(number){
+        case 0:
+            s = cell.id;
+            cell.value = "clicked";
+            clearNoMines(cell, dimension);
+            console.log(s);
+            break;
         case 1:
             cell.style.color = "blue";
             break;
@@ -212,28 +236,56 @@ function left_click(cell){
         case 6:
             cell.style.color =  "orange";
             break;
-        case 0:
+        case "m":
             cell.innerHTML = "🗿";
+            cell.style.fontSize = "15px";
+            gameOver(dimension);
             break;
     }
 }
 
 function right_click(cell){
-    if (cell.value == false){
-        if(document.getElementById("mines_left").value > 0){
+    if(document.getElementById("mines_left").value > 0 && cell.innerHTML != "🚩"){
             cell.style.fontSize= "15px";
-
             cell.innerHTML = "🚩";
-            cell.value = true;
             sub_mine(); 
-        }
     }
-    else{
+    else if(cell.innerHTML == "🚩"){
         cell.innerHTML = "";
         cell.style.fontSize= "18px";
-        cell.value = false; 
         sum_mine()
     }
+}
+
+function gameOver(dimension){
+    first_cell = false;
+    /*for(i = 0; i < dimension * dimension; i++){
+        document.getElementById("c" + i).onmouseup = function (){}
+        document.getElementById("c" + i).oncontextmenu = function () {}
+    }*/
+    document.getElementById("restart_btn").innerHTML = "🌋";
+}
+
+function clearNoMines(cell, dimension){
+    var id = parseInt(cell.id.substr(1,cell.id.length - 1));
+    var calc = [- dimension - 1, - dimension, - dimension + 1, - 1 , 1, dimension - 1, dimension , dimension + 1];
+    
+    for(let i = 0; i < calc.length; i++){
+        cont = calc[i];
+        console.log("id = " + id);
+        console.log("next = " + (id + cont));
+        adj = document.getElementById("c" + (id + cont));
+
+
+        console.log("control 1 id = " + id);
+        if(adj != null && adj.value != "clicked" && !(id%dimension == 0 && (cont == - dimension - 1 || cont == - 1 || cont == dimension - 1))
+                    && !(id%dimension == dimension - 1 && (cont == - dimension + 1 || cont == 1 || cont == dimension + 1))){
+            left_click(adj, dimension);
+        }
+        console.log("control 2 id = " + id);
+    }
+
+    console.log("finish = " + cell.id);
 }
 
 ////////////////////////////////// 
@@ -249,6 +301,7 @@ function restart_down(){
 function restart_up(){
     document.getElementById("restart_btn").style.borderColor = "rgb(58, 57, 57)";
     deleteDivs(document.getElementById('grid'))
+    cell_counter = -1;
     create_game(document.getElementById("grid").value);
 }
 
