@@ -289,7 +289,7 @@ function gameOver(dimension, win){
     }
 
     if(win){
-        document.getElementById("restart_btn").innerHTML = "🚬";
+        document.getElementById("restart_btn").innerHTML = "🤠";
     }
     else{
         document.getElementById("restart_btn").innerHTML = "🌋";
