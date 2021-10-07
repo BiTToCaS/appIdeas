@@ -4,6 +4,7 @@ var cell_counter = -1;
 var first_cell = false;
 document.getElementById("timer").value = 0;
 var timer_counters = 0;
+var clicked_counter = 0;
 
 
 
@@ -19,14 +20,17 @@ function create_game(value) {
     document.getElementById("back").style.display= 'block';
     document.getElementById("container").style.display= 'block';
     document.getElementById("restart_btn").innerHTML = "🗻";
-    var minesPositions = generateMinesPositions(parseInt(value));
-    create_grid(parseInt(value), minesPositions);
+    var ret = generateMinesPositions(parseInt(value));
+    var minesPositions = ret.first;
+    var noMines = ret.second;
+    clicked_counter = 0;
+    create_grid(parseInt(value), minesPositions, noMines);
 }
 
 function generateMinesPositions(gamemode){
-    var noMines = 0;
+    let noMines = 0;
     var dimensions = 0;
-    minesPositions = []
+    var minesPositions = []
     switch(gamemode){
         case 0:
             noMines = 10;
@@ -47,8 +51,7 @@ function generateMinesPositions(gamemode){
         if(!listContains(minesPositions,pos))
             minesPositions.push(pos);
     }
-
-    return minesPositions;
+    return {first:minesPositions, second:noMines};
 }
 
 function listContains(l , dict){
@@ -61,7 +64,7 @@ function listContains(l , dict){
 //
 ////////////////////////////////////////////////////////////////////
 
-function create_grid(gamemode, minesPos){
+function create_grid(gamemode, minesPos, noMines){
     first_cell = false;
     var dimension = 0;
     var grid = document.getElementById("grid");
@@ -108,7 +111,7 @@ function create_grid(gamemode, minesPos){
             cell.className = 'grid-item';
             cell.value = 0;
             cell.onmouseup = function (){
-                check_cell(dimension);
+                check_cell(dimension, noMines);
             }
 
             cell.addEventListener("contextmenu", e => e.preventDefault());  //Disable right click menu
@@ -172,7 +175,7 @@ function addCounterToAdjacent(dimension, id){
 //
 //////////////////////////////////
 
-function check_cell(dimension){
+function check_cell(dimension, noMines){
 
     if (first_cell == false){
         document.getElementById("timer").value = 0;
@@ -197,10 +200,10 @@ function check_cell(dimension){
     if (isRight)
         right_click(event.target);
     else
-        left_click(event.target, dimension);
+        left_click(event.target, dimension, noMines);
 }
 
-function left_click(cell, dimension){
+function left_click(cell, dimension, noMines){
     cell.style.borderColor = "rgb(190, 187, 187)";
     cell.style.backgroundColor = "rgb(190, 187, 187)";
 
@@ -213,35 +216,56 @@ function left_click(cell, dimension){
 
     switch(number){
         case 0:
-            s = cell.id;
+            cell.innerHTML = "";
             cell.value = "clicked";
-            clearNoMines(cell, dimension);
-            console.log(s);
+
+            clearNoMines(cell, dimension, noMines);
             break;
         case 1:
+            cell.value = "clicked";
+
             cell.style.color = "blue";
             break;
         case 2:
+            cell.value = "clicked";
+
             cell.style.color = "green";
             break;
         case 3:
+            cell.value = "clicked";
+
             cell.style.color = "red";
             break;
         case 4:
+            cell.value = "clicked";
+
             cell.style.color = "darkviolet";
             break;
         case 5:
+            cell.value = "clicked";
+
             cell.style.color = "red";
             break;
         case 6:
+            cell.value = "clicked";
+
             cell.style.color =  "orange";
             break;
         case "m":
             cell.innerHTML = "🗿";
             cell.style.fontSize = "15px";
-            gameOver(dimension);
+            gameOver(dimension, false);
             break;
     }
+
+
+    clicked_counter = clicked_counter + 1;
+
+    console.log(noMines);
+    console.log(dimension*dimension);
+    console.log(clicked_counter);
+    if(clicked_counter == (dimension*dimension) - noMines)
+        gameOver(dimension, true);
 }
 
 function right_click(cell){
@@ -257,35 +281,35 @@ function right_click(cell){
     }
 }
 
-function gameOver(dimension){
+function gameOver(dimension, win){
     first_cell = false;
-    /*for(i = 0; i < dimension * dimension; i++){
+    for(i = 0; i < dimension * dimension; i++){
         document.getElementById("c" + i).onmouseup = function (){}
         document.getElementById("c" + i).oncontextmenu = function () {}
-    }*/
-    document.getElementById("restart_btn").innerHTML = "🌋";
+    }
+
+    if(win){
+        document.getElementById("restart_btn").innerHTML = "🚬";
+    }
+    else{
+        document.getElementById("restart_btn").innerHTML = "🌋";
+    }
 }
 
-function clearNoMines(cell, dimension){
+function clearNoMines(cell, dimension, noMines){
     var id = parseInt(cell.id.substr(1,cell.id.length - 1));
     var calc = [- dimension - 1, - dimension, - dimension + 1, - 1 , 1, dimension - 1, dimension , dimension + 1];
     
     for(let i = 0; i < calc.length; i++){
         cont = calc[i];
-        console.log("id = " + id);
-        console.log("next = " + (id + cont));
         adj = document.getElementById("c" + (id + cont));
 
 
-        console.log("control 1 id = " + id);
         if(adj != null && adj.value != "clicked" && !(id%dimension == 0 && (cont == - dimension - 1 || cont == - 1 || cont == dimension - 1))
                     && !(id%dimension == dimension - 1 && (cont == - dimension + 1 || cont == 1 || cont == dimension + 1))){
-            left_click(adj, dimension);
+            left_click(adj, dimension, noMines);
         }
-        console.log("control 2 id = " + id);
     }
-
-    console.log("finish = " + cell.id);
 }
 
 ////////////////////////////////// 
